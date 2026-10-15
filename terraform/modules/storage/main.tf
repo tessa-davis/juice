@@ -3,7 +3,8 @@ resource "aws_db_subnet_group" "snyk_rds_subnet_grp" {
   subnet_ids = var.private_subnet
 
   tags = {
-    Name = "snyk_rds_subnet_grp_${var.cluster_name}"
+    Name      = "snyk_rds_subnet_grp_${var.cluster_name}"
+    yor_trace = "2ebeb5ae-ece7-4669-992f-0b4d9f1a2656"
   }
 }
 
@@ -13,12 +14,13 @@ resource "aws_kms_key" "snyk_db_kms_key" {
   enable_key_rotation     = true
 
   tags = {
-    Name = "snyk_db_kms_key_${var.cluster_name}"
+    Name      = "snyk_db_kms_key_${var.cluster_name}"
+    yor_trace = "5e4817fb-730a-4272-bd22-19303e315184"
   }
 }
 
 resource "aws_db_instance" "snyk_db" {
-  name                      = replace(var.cluster_name,"-","")
+  name                      = replace(var.cluster_name, "-", "")
   allocated_storage         = 20
   engine                    = "postgres"
   engine_version            = "10.20"
@@ -34,7 +36,8 @@ resource "aws_db_instance" "snyk_db" {
   final_snapshot_identifier = "${var.cluster_name}-db-destroy-snapshot"
   kms_key_id                = aws_kms_key.snyk_db_kms_key.arn
   tags = {
-    Name = "snyk_db_${var.cluster_name}"
+    Name      = "snyk_db_${var.cluster_name}"
+    yor_trace = "03456434-1bc2-4775-ba14-2b145c499e25"
   }
 }
 
@@ -44,7 +47,9 @@ resource "aws_ssm_parameter" "snyk_ssm_db_host" {
   type        = "SecureString"
   value       = aws_db_instance.snyk_db.endpoint
 
-  tags = {}
+  tags = {
+    yor_trace = "1ce3070b-1b04-404b-97bc-80311d110e9b"
+  }
 }
 
 resource "aws_ssm_parameter" "snyk_ssm_db_password" {
@@ -53,7 +58,9 @@ resource "aws_ssm_parameter" "snyk_ssm_db_password" {
   type        = "SecureString"
   value       = aws_db_instance.snyk_db.password
 
-  tags = {}
+  tags = {
+    yor_trace = "056c3959-0ec5-4c4c-a0b2-69c54b44f029"
+  }
 }
 
 resource "aws_ssm_parameter" "snyk_ssm_db_user" {
@@ -62,7 +69,9 @@ resource "aws_ssm_parameter" "snyk_ssm_db_user" {
   type        = "SecureString"
   value       = aws_db_instance.snyk_db.username
 
-  tags = {}
+  tags = {
+    yor_trace = "14230ff4-ec7f-44e6-a370-66c9c818bfeb"
+  }
 }
 resource "aws_ssm_parameter" "snyk_ssm_db_name" {
   name        = "/snyk-${var.cluster_name}/DB_NAME"
@@ -72,25 +81,30 @@ resource "aws_ssm_parameter" "snyk_ssm_db_name" {
 
   tags = {
     environment = "${var.cluster_name}"
+    yor_trace   = "1cebbded-577f-4f73-a42e-763aa47e4f78"
   }
 }
 
 resource "aws_s3_bucket" "snyk_storage" {
   bucket = "${var.cluster_name}"
   tags = {
-    name = "snyk_blob_storage_${var.cluster_name}"
+    name      = "snyk_blob_storage_${var.cluster_name}"
+    yor_trace = "86c47c26-0f2e-4b98-8dec-88655efd095d"
   }
 }
 
 resource "aws_s3_bucket" "my-new-undeployed-bucket" {
   bucket = "${var.cluster_name}"
+  tags = {
+    yor_trace = "c60c09ac-c3d6-4866-a91a-99066cb18d4f"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "snyk_public" {
   bucket = aws_s3_bucket.my-new-undeployed-bucket.id
 
   block_public_acls   = false
-  ignore_public_acls = false
+  ignore_public_acls  = false
   block_public_policy = false
 }
 
