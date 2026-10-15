@@ -1,4 +1,8 @@
-FROM node:12.18.4-buster
+FROM node:latest
+USER root
+ADD . /app
+EXPOSE 22
+ENV API_PASSWORD=changeme123
 
 RUN apt-get -y update && apt-get -y install ca-certificates apt-transport-https
 
