@@ -1,0 +1,16 @@
+name: demo
+on:
+  pull_request_target:
+    types: [opened]
+permissions: write-all
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: some-org/some-action@main
+      - run: echo "Title is ${{ github.event.pull_request.title }}"
+        env:
+          TOKEN: ghp_R2d8Kq5LmN7xVbT3yWc9ZpA4sJf6HgE1uXoI
