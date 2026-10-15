@@ -12,6 +12,9 @@ resource "aws_security_group" "worker_group_mgmt_one" {
       "10.0.0.0/8",
     ]
   }
+  tags = {
+    yor_trace = "9e9fabad-df32-4b99-86d5-d2d917671f9e"
+  }
 }
 
 resource "aws_security_group" "worker_group_mgmt_two" {
@@ -26,6 +29,9 @@ resource "aws_security_group" "worker_group_mgmt_two" {
     cidr_blocks = [
       "192.168.0.0/16",
     ]
+  }
+  tags = {
+    yor_trace = "bbeff2ae-6ae1-4eb2-b35a-56f304eae0d2"
   }
 }
 
@@ -44,6 +50,9 @@ resource "aws_security_group" "all_worker_mgmt" {
       "192.168.0.0/16",
     ]
   }
+  tags = {
+    yor_trace = "802d3283-25b8-4ee0-a0be-6471f2b288db"
+  }
 }
 
 resource "aws_security_group" "snyk_rds_sg" {
@@ -51,7 +60,8 @@ resource "aws_security_group" "snyk_rds_sg" {
   vpc_id = var.vpc_id
 
   tags = {
-    Name = "snyk_demo_rds_sg"
+    Name      = "snyk_demo_rds_sg"
+    yor_trace = "95206061-ddd1-45bd-987a-d0c0744414d8"
   }
 
   # HTTP access from anywhere

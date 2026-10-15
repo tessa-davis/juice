@@ -1,7 +1,7 @@
 resource "random_string" "suffix" {
   length  = 5
   special = false
-  upper = false
+  upper   = false
 }
 
 locals {
@@ -33,6 +33,7 @@ module "vpc" {
 
   tags = {
     "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    yor_trace                                     = "988f22e1-da51-4ca8-985a-4cb1bc726b79"
   }
 
   public_subnet_tags = {
